@@ -356,6 +356,7 @@ class FencingEnemy(Enemy):
                  color: str, ):
         super().__init__(game, size, color)
         self.__id = None
+        self.__direction = 'right'
 
     def create(self) -> None:
         self.__id = self.canvas.create_oval(0, 0, 0, 0, fill=self.color, outline=self.color)
@@ -364,16 +365,22 @@ class FencingEnemy(Enemy):
         home_x = self.game.home.x
         home_y = self.game.home.y
 
-        if (home_x - self.x) < 0:
-            self.y -= 6
-        else:
-            self.y += 6
-
-        if (home_y - self.y) < 0:
-            self.x += 6
-        else:
-            self.x -= 6
-
+        if self.__direction == 'right':
+            self.x += 4
+            if self.x >= home_x + 25:
+                self.__direction = 'down'
+        elif self.__direction == 'down':
+            self.y += 4
+            if self.y >= home_y + 25:
+                self.__direction = 'left'
+        elif self.__direction == 'left':
+            self.x -= 4
+            if self.x <= home_x - 25:
+                self.__direction = 'up'
+        elif self.__direction == 'up':
+            self.y -= 4
+            if self.y <= home_y - 25:
+                self.__direction = 'right'
         if self.hits_player():
             self.game.game_over_lose()
 
@@ -478,6 +485,7 @@ class EnemyGenerator:
         self.__game.after(500,self.create_chasing_enemy)
         self.create_fencing_enemy()
         self.__game.after(300,self.create_my_enemy())
+        self.__game.after(300,self.create_random_walk_enemy())
 
     def create_random_walk_enemy(self):
         for num in range(self.level*5):
@@ -494,11 +502,12 @@ class EnemyGenerator:
             self.game.add_element(new_chasing_enemy)
 
     def create_fencing_enemy(self):
-        size = [25,30]
-        for num in range(2):
+        gap = [20,40,60,80]
+
+        for num in range(4):
             new_fencing_enemy = FencingEnemy(self.__game,20,"#A1EAFB")
-            new_fencing_enemy.x = self.game.home.x - size[num]
-            new_fencing_enemy.y = self.game.home.y - size[num]
+            new_fencing_enemy.x = self.game.home.x - gap[num]
+            new_fencing_enemy.y = self.game.home.y - gap[num]
             self.game.add_element(new_fencing_enemy)
 
     def create_my_enemy(self):
