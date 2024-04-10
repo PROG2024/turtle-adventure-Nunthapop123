@@ -480,7 +480,7 @@ class EnemyGenerator:
         self.__game.after(300,self.create_my_enemy())
 
     def create_random_walk_enemy(self):
-        for num in range(self.level*30):
+        for num in range(self.level*5):
             new_rand_walk_enemy = RandomWalkEnemy(self.__game, 25, "#CDE990")
             new_rand_walk_enemy.x = random.randint(0,self.game.screen_width)
             new_rand_walk_enemy.y = random.randint(0,self.game.screen_height)
@@ -493,23 +493,16 @@ class EnemyGenerator:
             new_chasing_enemy.y = random.randint(0,self.game.screen_height)
             self.game.add_element(new_chasing_enemy)
 
-    # def create_fencing_enemy(self):
-    #     list1 = [25,30]
-    #     for num in range(2):
-    #         new_fencing_enemy = FencingEnemy(self.__game,20,"blue")
-    #         new_fencing_enemy.x = self.game.home.x - list1[num]
-    #         new_fencing_enemy.y = self.game.home.y - list1[num]
-    #         self.game.add_element(new_fencing_enemy)
-
     def create_fencing_enemy(self):
-        for num in range(self.level):
+        size = [25,30]
+        for num in range(2):
             new_fencing_enemy = FencingEnemy(self.__game,20,"#A1EAFB")
-            new_fencing_enemy.x = self.game.home.x - 25
-            new_fencing_enemy.y = self.game.home.y - 25
+            new_fencing_enemy.x = self.game.home.x - size[num]
+            new_fencing_enemy.y = self.game.home.y - size[num]
             self.game.add_element(new_fencing_enemy)
 
     def create_my_enemy(self):
-        for num in range(self.level * 20):
+        for num in range(self.level * 5):
             new_my_enemy = MyEnemy(self.__game, 25, "#F38181")
             new_my_enemy.x = random.randint(0, self.game.screen_width)
             new_my_enemy.y = random.randint(0, self.game.screen_height)
